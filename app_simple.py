@@ -23,7 +23,7 @@ app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16MB 제한
 @app.route('/')
 def index():
     """메인 페이지"""
-    return render_template('html_viewer.html')
+    return render_template('index.html')
 
 @app.route('/api/analyze-document', methods=['POST'])
 def analyze_document():

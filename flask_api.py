@@ -11,7 +11,7 @@ CORS(app)
 
 @app.route("/")
 def home():
-    return render_template("html_viewer.html")
+    return render_template("index.html")
 
 @app.route("/api/analyze-document", methods=["POST"])
 def analyze_document():
