@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HWP HTML 뷰어</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            opacity: 0.9;
+            font-size: 1.1em;
+        }
+
+        .main-content {
+            display: flex;
+            min-height: 600px;
+        }
+
+        .upload-panel {
+            width: 25%;
+            padding: 40px;
+            border-right: 1px solid #eee;
+            background: #f8f9fa;
+        }
+
+        .html-panel {
+            width: 75%;
+            padding: 40px;
+            display: none;
+        }
+
+        .upload-area {
+            border: 3px dashed #ddd;
+            border-radius: 10px;
+            padding: 60px 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .upload-area:hover {
+            border-color: #667eea;
+            background-color: #f0f2ff;
+        }
+
+        .upload-area.dragover {
+            border-color: #667eea;
+            background-color: #e6ebff;
+        }
+
+        .upload-icon {
+            font-size: 3em;
+            color: #ddd;
+            margin-bottom: 20px;
+        }
+
+        .upload-text {
+            font-size: 1.1em;
+            color: #666;
+            margin-bottom: 15px;
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        .upload-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .upload-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .file-info {
+            background: #e9f7ef;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border-left: 4px solid #28a745;
+        }
+
+        .file-info h4 {
+            color: #155724;
+            margin-bottom: 8px;
+        }
+
+        .file-info p {
+            color: #155724;
+            margin: 3px 0;
+            font-size: 14px;
+        }
+
+        .html-content {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            min-height: 500px;
+            overflow-y: auto;
+            max-height: 80vh;
+        }
+
+        /* 문서 HTML 스타일링 */
+        .html-content table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 10px 0;
+        }
+
+        .html-content table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            vertical-align: top;
+        }
+
+        .html-content header {
+            font-weight: bold;
+            margin: 10px 0;
+        }
+
+        .html-content h1 {
+            font-size: 18px;
+            margin: 15px 0;
+            text-align: center;
+        }
+
+        .html-content figure img {
+            max-width: 300px;
+            height: auto;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin: 10px 0;
+        }
+
+        .html-content p {
+            margin: 8px 0;
+            line-height: 1.5;
+        }
+
+        .html-content img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 10px auto;
+        }
+
+        .error {
+            background: #fff5f5;
+            border: 1px solid #fed7d7;
+            color: #e53e3e;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+
+        .success {
+            background: #f0fff4;
+            border: 1px solid #c6f6d5;
+            color: #38a169;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+
+        .reset-btn {
+            background: #6c757d;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        .reset-btn:hover {
+            background: #5a6268;
+        }
+
+        @media (max-width: 1024px) {
+            .main-content {
+                flex-direction: column;
+            }
+            
+            .upload-panel, .html-panel {
+                width: 100%;
+            }
+            
+            .upload-panel {
+                border-right: none;
+                border-bottom: 1px solid #eee;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📄 문서 HTML 뷰어</h1>
+            <p>Document Digitization API로 변환된 HTML을 그대로 확인하세요 (HWP, PDF 지원)</p>
+        </div>
+
+        <div class="main-content">
+            <div class="upload-panel">
+                <div class="upload-area" id="uploadArea">
+                    <div class="upload-icon">📁</div>
+                    <div class="upload-text">HWP 또는 PDF 파일을 여기로 드래그하거나 클릭하여 선택하세요</div>
+                    <button class="upload-btn" id="selectFileBtn">파일 선택</button>
+                    <input type="file" id="fileInput" class="file-input" accept=".hwp,.pdf">
+                </div>
+
+                <div class="loading" id="loading">
+                    <div class="spinner"></div>
+                    <p>🔍 Document Digitization API로 분석 중...</p>
+                </div>
+            </div>
+
+            <div class="html-panel" id="htmlPanel">
+                <div class="file-info" id="fileInfo" style="display: none;"></div>
+                
+                <h3>🌐 변환된 HTML 내용</h3>
+                <div class="html-content" id="htmlContent"></div>
+
+                <button class="reset-btn" onclick="resetViewer()">다른 파일 분석</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const uploadArea = document.getElementById('uploadArea');
+        const fileInput = document.getElementById('fileInput');
+        const selectFileBtn = document.getElementById('selectFileBtn');
+        const loading = document.getElementById('loading');
+        const htmlPanel = document.getElementById('htmlPanel');
+        const uploadPanel = document.querySelector('.upload-panel');
+
+        // 이벤트 리스너 설정
+        selectFileBtn.addEventListener('click', () => fileInput.click());
+        uploadArea.addEventListener('click', () => fileInput.click());
+        fileInput.addEventListener('change', handleFileSelect);
+
+        // 드래그 앤 드롭
+        uploadArea.addEventListener('dragover', handleDragOver);
+        uploadArea.addEventListener('dragleave', handleDragLeave);
+        uploadArea.addEventListener('drop', handleDrop);
+
+        function handleDragOver(e) {
+            e.preventDefault();
+            uploadArea.classList.add('dragover');
+        }
+
+        function handleDragLeave(e) {
+            e.preventDefault();
+            uploadArea.classList.remove('dragover');
+        }
+
+        function handleDrop(e) {
+            e.preventDefault();
+            uploadArea.classList.remove('dragover');
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                handleFile(files[0]);
+            }
+        }
+
+        function handleFileSelect(e) {
+            const file = e.target.files[0];
+            if (file) {
+                handleFile(file);
+            }
+        }
+
+        function handleFile(file) {
+            const fileName = file.name.toLowerCase();
+            if (!fileName.endsWith('.hwp') && !fileName.endsWith('.pdf')) {
+                showError('HWP 또는 PDF 파일만 업로드 가능합니다.');
+                return;
+            }
+
+            if (file.size > 16 * 1024 * 1024) {
+                showError('파일 크기는 16MB를 초과할 수 없습니다.');
+                return;
+            }
+
+            uploadFile(file);
+        }
+
+        function uploadFile(file) {
+            const formData = new FormData();
+            formData.append('file', file);
+
+            loading.style.display = 'block';
+            uploadArea.style.display = 'none';
+
+            fetch('/api/analyze-document', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                loading.style.display = 'none';
+                
+                if (data.success) {
+                    showHTMLContent(data);
+                } else {
+                    showError(data.error || 'API 분석 중 오류가 발생했습니다.');
+                    uploadArea.style.display = 'block';
+                }
+            })
+            .catch(error => {
+                loading.style.display = 'none';
+                showError('서버 연결 오류가 발생했습니다.');
+                uploadArea.style.display = 'block';
+                console.error('Error:', error);
+            });
+        }
+
+        function showHTMLContent(data) {
+            // 파일 정보 표시
+            const fileInfo = document.getElementById('fileInfo');
+            fileInfo.innerHTML = `
+                <h4>📄 변환된 파일</h4>
+                <p><strong>파일명:</strong> ${data.original_filename}</p>
+                <p><strong>크기:</strong> ${formatFileSize(data.file_info.size)}</p>
+                <p><strong>API 상태:</strong> ✅ 변환 성공</p>
+            `;
+            fileInfo.style.display = 'block';
+
+            // HTML 내용 표시
+            const htmlContent = document.getElementById('htmlContent');
+            if (data.html_content) {
+                htmlContent.innerHTML = data.html_content;
+                showMessage('HTML 변환이 완료되었습니다!', 'success');
+            } else {
+                htmlContent.innerHTML = '<p>변환된 HTML 내용이 없습니다.</p>';
+                showMessage('HTML 내용을 찾을 수 없습니다.', 'error');
+            }
+
+            // HTML 패널 표시
+            uploadPanel.style.width = '20%';
+            htmlPanel.style.display = 'block';
+
+            // 디버깅용: 전체 API 응답을 콘솔에 출력
+            console.log('Full API Response:', data.full_api_response);
+        }
+
+        function resetViewer() {
+            document.getElementById('fileInput').value = '';
+            uploadArea.style.display = 'block';
+            htmlPanel.style.display = 'none';
+            uploadPanel.style.width = '25%';
+            
+            // 기존 메시지 제거
+            const existingMessages = document.querySelectorAll('.error, .success');
+            existingMessages.forEach(msg => msg.remove());
+        }
+
+        function showError(message) {
+            showMessage(message, 'error');
+        }
+
+        function showMessage(message, type) {
+            const existingMessage = document.querySelector('.error, .success');
+            if (existingMessage) {
+                existingMessage.remove();
+            }
+
+            const messageDiv = document.createElement('div');
+            messageDiv.className = type;
+            messageDiv.textContent = message;
+            
+            const container = htmlPanel.style.display === 'block' ? htmlPanel : uploadPanel;
+            container.insertBefore(messageDiv, container.firstChild);
+
+            setTimeout(() => {
+                if (messageDiv.parentNode) {
+                    messageDiv.remove();
+                }
+            }, 5000);
+        }
+
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+    </script>
+</body>
+</html>
