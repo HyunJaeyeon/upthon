@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HWP HTML 뷰어</title>
+    <title>똑평</title>
     <style>
         * {
             margin: 0;
@@ -13,22 +13,24 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: #0f0f0f;
             min-height: 100vh;
             padding: 20px;
+            color: #e0e0e0;
         }
 
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            background: white;
+            background: #1a1a1a;
             border-radius: 15px;
-            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.3);
             overflow: hidden;
+            border: 1px solid #333;
         }
 
         .header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
             color: white;
             padding: 30px;
             text-align: center;
@@ -37,6 +39,7 @@
         .header h1 {
             font-size: 2.5em;
             margin-bottom: 10px;
+            font-weight: 700;
         }
 
         .header p {
@@ -52,44 +55,46 @@
         .upload-panel {
             width: 25%;
             padding: 40px;
-            border-right: 1px solid #eee;
-            background: #f8f9fa;
+            border-right: 1px solid #333;
+            background: #1f1f1f;
         }
 
         .html-panel {
             width: 75%;
             padding: 40px;
             display: none;
+            background: #1a1a1a;
         }
 
         .upload-area {
-            border: 3px dashed #ddd;
+            border: 3px dashed #444;
             border-radius: 10px;
             padding: 60px 20px;
             text-align: center;
             transition: all 0.3s ease;
             cursor: pointer;
+            background: #262626;
         }
 
         .upload-area:hover {
-            border-color: #667eea;
-            background-color: #f0f2ff;
+            border-color: #2563eb;
+            background-color: #2a2a2a;
         }
 
         .upload-area.dragover {
-            border-color: #667eea;
-            background-color: #e6ebff;
+            border-color: #2563eb;
+            background-color: #2e2e2e;
         }
 
         .upload-icon {
             font-size: 3em;
-            color: #ddd;
+            color: #666;
             margin-bottom: 20px;
         }
 
         .upload-text {
             font-size: 1.1em;
-            color: #666;
+            color: #b0b0b0;
             margin-bottom: 15px;
         }
 
@@ -98,7 +103,7 @@
         }
 
         .upload-btn {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
             color: white;
             border: none;
             padding: 12px 25px;
@@ -110,6 +115,7 @@
 
         .upload-btn:hover {
             transform: translateY(-2px);
+            background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%);
         }
 
         .loading {
@@ -119,8 +125,8 @@
         }
 
         .spinner {
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid #667eea;
+            border: 4px solid #333;
+            border-top: 4px solid #2563eb;
             border-radius: 50%;
             width: 40px;
             height: 40px;
@@ -134,32 +140,34 @@
         }
 
         .file-info {
-            background: #e9f7ef;
+            background: #1e3a2e;
             padding: 15px;
             border-radius: 8px;
             margin-bottom: 20px;
-            border-left: 4px solid #28a745;
+            border-left: 4px solid #10b981;
+            border: 1px solid #374151;
         }
 
         .file-info h4 {
-            color: #155724;
+            color: #10b981;
             margin-bottom: 8px;
         }
 
         .file-info p {
-            color: #155724;
+            color: #d1fae5;
             margin: 3px 0;
             font-size: 14px;
         }
 
         .html-content {
-            background: white;
-            border: 1px solid #ddd;
+            background: #1f1f1f;
+            border: 1px solid #333;
             border-radius: 8px;
             padding: 20px;
             min-height: 500px;
             overflow-y: auto;
             max-height: 80vh;
+            color: #e0e0e0;
         }
 
         /* 문서 HTML 스타일링 */
@@ -170,26 +178,29 @@
         }
 
         .html-content table td {
-            border: 1px solid #ddd;
+            border: 1px solid #444;
             padding: 8px;
             vertical-align: top;
+            background: #262626;
         }
 
         .html-content header {
             font-weight: bold;
             margin: 10px 0;
+            color: #e0e0e0;
         }
 
         .html-content h1 {
             font-size: 18px;
             margin: 15px 0;
             text-align: center;
+            color: #fff;
         }
 
         .html-content figure img {
             max-width: 300px;
             height: auto;
-            border: 1px solid #ddd;
+            border: 1px solid #444;
             border-radius: 4px;
             margin: 10px 0;
         }
@@ -207,35 +218,36 @@
         }
 
         .error {
-            background: #fff5f5;
-            border: 1px solid #fed7d7;
-            color: #e53e3e;
+            background: #3a1f1f;
+            border: 1px solid #ef4444;
+            color: #fca5a5;
             padding: 15px;
             border-radius: 8px;
             margin: 20px 0;
         }
 
         .success {
-            background: #f0fff4;
-            border: 1px solid #c6f6d5;
-            color: #38a169;
+            background: #1e3a2e;
+            border: 1px solid #10b981;
+            color: #86efac;
             padding: 15px;
             border-radius: 8px;
             margin: 20px 0;
         }
 
         .reset-btn {
-            background: #6c757d;
+            background: #4b5563;
             color: white;
             border: none;
             padding: 10px 20px;
             border-radius: 6px;
             cursor: pointer;
             margin-top: 20px;
+            transition: background 0.2s ease;
         }
 
         .reset-btn:hover {
-            background: #5a6268;
+            background: #374151;
         }
 
         @media (max-width: 1024px) {
@@ -257,8 +269,8 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>📄 문서 HTML 뷰어</h1>
-            <p>Document Digitization API로 변환된 HTML을 그대로 확인하세요 (HWP, PDF 지원)</p>
+            <h1>📝 똑평</h1>
+            <p>평가표를 스마트하게 생성하고 관리하세요</p>
         </div>
 
         <div class="main-content">
@@ -279,7 +291,7 @@
             <div class="html-panel" id="htmlPanel">
                 <div class="file-info" id="fileInfo" style="display: none;"></div>
                 
-                <h3>🌐 변환된 HTML 내용</h3>
+                <h3>📝 똑평 변환하기</h3>
                 <div class="html-content" id="htmlContent"></div>
 
                 <button class="reset-btn" onclick="resetViewer()">다른 파일 분석</button>
@@ -377,22 +389,117 @@
         }
 
         function showHTMLContent(data) {
-            // 파일 정보 표시
+            // 파일 정보 표시 (파일명만)
             const fileInfo = document.getElementById('fileInfo');
             fileInfo.innerHTML = `
-                <h4>📄 변환된 파일</h4>
-                <p><strong>파일명:</strong> ${data.original_filename}</p>
-                <p><strong>크기:</strong> ${formatFileSize(data.file_info.size)}</p>
-                <p><strong>API 상태:</strong> ✅ 변환 성공</p>
+                <p><strong>📄 ${data.original_filename}</strong></p>
             `;
             fileInfo.style.display = 'block';
 
             // HTML 내용 표시
             const htmlContent = document.getElementById('htmlContent');
             if (data.html_content) {
-                htmlContent.innerHTML = data.html_content;
-                showMessage('HTML 변환이 완료되었습니다!', 'success');
-            } else {
+        htmlContent.innerHTML = data.html_content;
+
+        // 여기서 버튼 삽입 작업!
+        setTimeout(() => {
+            const allTables = htmlContent.querySelectorAll('table');
+            
+            allTables.forEach((table, tableIndex) => {
+                const rows = table.querySelectorAll('tr');
+                let contextInfo = {
+                    grade: '',
+                    semester: '',
+                    subject: '',
+                    unit: '',
+                    criteria: '',
+                    domain: ''
+                };
+
+                // 컨텍스트 정보 수집
+                rows.forEach(row => {
+                    const firstCell = row.children[0]?.innerText?.trim();
+                    const secondCell = row.children[1]?.innerText?.trim();
+                    
+                    if (firstCell === '단원명') {
+                        contextInfo.unit = secondCell;
+                    } else if (firstCell === '성취기준') {
+                        contextInfo.criteria = secondCell;
+                    } else if (firstCell === '영 역' || firstCell === '영역') {
+                        contextInfo.domain = secondCell;
+                    }
+                });
+
+                // 학년/학기 정보 수집 (표 위의 텍스트에서)
+                const prevElements = [];
+                let currentElement = table.previousElementSibling;
+                for (let i = 0; i < 5 && currentElement; i++) {
+                    prevElements.unshift(currentElement.innerText?.trim() || '');
+                    currentElement = currentElement.previousElementSibling;
+                }
+                
+                // 과목명과 학년/학기 정보 찾기
+                prevElements.forEach(text => {
+                    if (text.includes('학년') && text.includes('학기')) {
+                        const gradeMatch = text.match(/(\d+)학년/);
+                        const semesterMatch = text.match(/(\d+)학기/);
+                        if (gradeMatch) contextInfo.grade = gradeMatch[1];
+                        if (semesterMatch) contextInfo.semester = semesterMatch[1];
+                    }
+                    if (text.includes('과') && text.includes('평가')) {
+                        contextInfo.subject = text.replace('평가 기준안', '').trim();
+                    }
+                });
+
+                // 평가요소 찾아서 버튼 추가
+                rows.forEach(row => {
+                    const firstCellText = row.children[0]?.innerText?.trim();
+                    if (firstCellText === '평가요소') {
+                        const targetTd = row.children[1];
+                        const original = targetTd.innerHTML;
+
+                        // 이미 버튼이 있는지 확인
+                        if (targetTd.querySelector('button')) {
+                            return;
+                        }
+
+                        const button = document.createElement('button');
+                        button.innerText = '새로운 문장 생성';
+                        button.onclick = () => generateTextOptionsAndCriteria(targetTd, contextInfo, table);
+                        button.style.marginLeft = '10px';
+                        button.style.padding = '4px 8px';
+                        button.style.fontSize = '12px';
+                        button.style.backgroundColor = '#007bff';
+                        button.style.color = 'white';
+                        button.style.border = 'none';
+                        button.style.borderRadius = '4px';
+                        button.style.cursor = 'pointer';
+
+                        // 복사 버튼 생성
+                        const copyButton = document.createElement('button');
+                        copyButton.innerText = '📋 복사';
+                        copyButton.onclick = () => copyTextToClipboard(targetTd);
+                        copyButton.style.marginLeft = '5px';
+                        copyButton.style.padding = '4px 8px';
+                        copyButton.style.fontSize = '12px';
+                        copyButton.style.backgroundColor = '#28a745';
+                        copyButton.style.color = 'white';
+                        copyButton.style.border = 'none';
+                        copyButton.style.borderRadius = '4px';
+                        copyButton.style.cursor = 'pointer';
+
+                        // 버튼 삽입
+                        targetTd.innerHTML = `<span class="original-text">${original}</span>`;
+                        targetTd.appendChild(button);
+                        targetTd.appendChild(copyButton);
+                    }
+                });
+
+                // 평가기준 테이블에도 버튼 추가
+                addCriteriaButtons(table, contextInfo);
+            });
+        }, 10); // DOM이 그려지고 나서 삽입되도록 delay
+    } else {
                 htmlContent.innerHTML = '<p>변환된 HTML 내용이 없습니다.</p>';
                 showMessage('HTML 내용을 찾을 수 없습니다.', 'error');
             }
@@ -450,3 +557,484 @@
     </script>
 </body>
 </html>
+
+<script>
+    async function generateTextOptions(tdElement, contextInfo) {
+        const span = tdElement.querySelector('.original-text');
+        const originalText = span.innerText.trim();
+
+        // 기존 아코디언이 있으면 제거
+        const existingAccordion = tdElement.querySelector('.text-options-accordion');
+        if (existingAccordion) {
+            existingAccordion.remove();
+        }
+
+        // 로딩 표시
+        span.innerText = '⏳ 문장 생성 중...';
+
+        try {
+            const res = await fetch('/api/generate-text-options', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ 
+                    text: originalText,
+                    context: contextInfo
+                })
+            });
+
+            const result = await res.json();
+
+            if (result.success) {
+                // 원문 복구
+                span.innerText = originalText;
+                
+                // 아코디언 UI 생성
+                createTextOptionsAccordion(tdElement, result.options, originalText);
+            } else {
+                span.innerText = originalText;
+                alert('❌ 오류: ' + result.error);
+            }
+        } catch (err) {
+            console.error(err);
+            span.innerText = originalText;
+            alert('서버 연결 오류가 발생했습니다.');
+        }
+    }
+
+    function createTextOptionsAccordion(tdElement, options, originalText) {
+        const accordion = document.createElement('div');
+        accordion.className = 'text-options-accordion';
+        accordion.style.cssText = `
+            margin-top: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background: #f8f9fa;
+            max-width: 500px;
+        `;
+
+        const header = document.createElement('div');
+        header.innerHTML = '📝 생성된 문장 옵션 (클릭하여 선택)';
+        header.style.cssText = `
+            padding: 8px 12px;
+            background: #e9ecef;
+            border-bottom: 1px solid #ddd;
+            font-weight: bold;
+            font-size: 13px;
+            cursor: pointer;
+        `;
+
+        const content = document.createElement('div');
+        content.style.cssText = `
+            padding: 8px;
+            display: block;
+        `;
+
+        // 원문 옵션 추가
+        const originalOption = document.createElement('div');
+        originalOption.className = 'text-option';
+        originalOption.innerHTML = `
+            <div style="padding: 8px; border: 1px solid #ccc; margin-bottom: 5px; cursor: pointer; border-radius: 3px; background: #fff;">
+                <strong>원문:</strong> ${originalText}
+            </div>
+        `;
+        originalOption.onclick = () => selectOption(tdElement, originalText);
+        content.appendChild(originalOption);
+
+        // 생성된 옵션들 추가
+        options.forEach((option, index) => {
+            const optionDiv = document.createElement('div');
+            optionDiv.className = 'text-option';
+            optionDiv.innerHTML = `
+                <div style="padding: 8px; border: 1px solid #007bff; margin-bottom: 5px; cursor: pointer; border-radius: 3px; background: #fff; transition: background-color 0.2s;">
+                    <strong>옵션 ${index + 1}:</strong> ${option}
+                </div>
+            `;
+            optionDiv.onmouseover = () => optionDiv.firstElementChild.style.backgroundColor = '#e3f2fd';
+            optionDiv.onmouseout = () => optionDiv.firstElementChild.style.backgroundColor = '#fff';
+            optionDiv.onclick = () => selectOption(tdElement, option);
+            content.appendChild(optionDiv);
+        });
+
+        // 닫기 버튼
+        const closeBtn = document.createElement('button');
+        closeBtn.innerText = '✕ 닫기';
+        closeBtn.style.cssText = `
+            margin-top: 8px;
+            padding: 4px 8px;
+            background: #6c757d;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 11px;
+        `;
+        closeBtn.onclick = () => accordion.remove();
+        content.appendChild(closeBtn);
+
+        accordion.appendChild(header);
+        accordion.appendChild(content);
+        tdElement.appendChild(accordion);
+    }
+
+    function selectOption(tdElement, selectedText) {
+        const span = tdElement.querySelector('.original-text');
+        const originalText = span.innerText.trim();
+        span.innerText = selectedText;
+        
+        // 아코디언 제거
+        const accordion = tdElement.querySelector('.text-options-accordion');
+        if (accordion) {
+            accordion.remove();
+        }
+        
+        // 선택 완료 알림 (잠깐만 표시)
+        const notification = document.createElement('span');
+        notification.innerText = ' ✅';
+        notification.style.color = '#28a745';
+        span.appendChild(notification);
+        setTimeout(() => notification.remove(), 1500);
+        
+        // 평가요소가 변경된 경우에만 평가기준 업데이트 제안
+        if (selectedText !== originalText) {
+            // 현재 테이블 찾기
+            const table = tdElement.closest('table');
+            if (table) {
+                // 컨텍스트 정보 수집
+                const contextInfo = extractContextFromTable(table);
+                
+                // 평가기준 업데이트 제안
+                setTimeout(() => {
+                    const shouldUpdate = confirm("평가요소가 변경되었습니다. 평가기준(매우잘함, 잘함, 보통, 노력요함)도 함께 업데이트하시겠습니까?");
+                    if (shouldUpdate) {
+                        generateEvaluationCriteria(table, selectedText, contextInfo);
+                    }
+                }, 500); // 체크마크 표시 후 약간의 딜레이
+            }
+        }
+    }
+
+    function copyTextToClipboard(tdElement) {
+        const span = tdElement.querySelector('.original-text');
+        const text = span.innerText.trim();
+        
+        // 클립보드 API가 있는지 확인
+        if (navigator.clipboard && window.isSecureContext) {
+            navigator.clipboard.writeText(text).then(() => {
+                alert("복사되었습니다!");
+            }).catch((err) => {
+                console.error('클립보드 복사 실패:', err);
+                // fallback 방법 사용
+                fallbackCopy(text);
+            });
+        } else {
+            // fallback 방법 사용
+            fallbackCopy(text);
+        }
+    }
+
+    function fallbackCopy(text) {
+        // 임시 textarea 생성
+        const textArea = document.createElement('textarea');
+        textArea.value = text;
+        textArea.style.position = 'fixed';
+        textArea.style.left = '-999999px';
+        textArea.style.top = '-999999px';
+        document.body.appendChild(textArea);
+        
+        textArea.focus();
+        textArea.select();
+        
+        try {
+            const successful = document.execCommand('copy');
+            if (successful) {
+                alert("복사되었습니다!");
+            } else {
+                alert("복사에 실패했습니다.");
+            }
+        } catch (err) {
+            console.error('복사 실패:', err);
+            alert("복사에 실패했습니다: " + err);
+        } finally {
+            document.body.removeChild(textArea);
+        }
+    }
+
+    async function generateTextOptionsAndCriteria(tdElement, contextInfo, table) {
+        // 기존 평가요소 생성 함수 호출 (아코디언에서 선택 시 자동으로 평가기준 업데이트 됨)
+        await generateTextOptions(tdElement, contextInfo);
+    }
+
+    function addCriteriaButtons(table, contextInfo) {
+        const rows = table.querySelectorAll('tr');
+        const criteriaLevels = ['매우잘함', '잘함', '보통', '노력요함'];
+        
+        rows.forEach(row => {
+            const firstCellText = row.children[0]?.innerText?.trim();
+            if (criteriaLevels.includes(firstCellText)) {
+                const targetTd = row.children[1];
+                
+                // 이미 버튼이 있는지 확인
+                if (targetTd.querySelector('button')) {
+                    return;
+                }
+                
+                const original = targetTd.innerHTML;
+                
+                const button = document.createElement('button');
+                button.innerText = '🔄';
+                button.onclick = () => generateSingleCriteria(targetTd, firstCellText, contextInfo, table);
+                button.style.marginLeft = '10px';
+                button.style.padding = '3px 6px';
+                button.style.fontSize = '11px';
+                button.style.backgroundColor = '#6f42c1';
+                button.style.color = 'white';
+                button.style.border = 'none';
+                button.style.borderRadius = '3px';
+                button.style.cursor = 'pointer';
+
+                // 복사 버튼
+                const copyButton = document.createElement('button');
+                copyButton.innerText = '📋';
+                copyButton.onclick = () => copyTextToClipboard(targetTd);
+                copyButton.style.marginLeft = '3px';
+                copyButton.style.padding = '3px 6px';
+                copyButton.style.fontSize = '11px';
+                copyButton.style.backgroundColor = '#28a745';
+                copyButton.style.color = 'white';
+                copyButton.style.border = 'none';
+                copyButton.style.borderRadius = '3px';
+                copyButton.style.cursor = 'pointer';
+
+                targetTd.innerHTML = `<span class="original-text">${original}</span>`;
+                targetTd.appendChild(button);
+                targetTd.appendChild(copyButton);
+            }
+        });
+    }
+
+    async function generateEvaluationCriteria(table, evaluationElement, contextInfo) {
+        const rows = table.querySelectorAll('tr');
+        const criteriaLevels = ['매우잘함', '잘함', '보통', '노력요함'];
+        
+        // 기존 평가기준 텍스트 수집
+        const originalCriteria = {};
+        rows.forEach(row => {
+            const firstCellText = row.children[0]?.innerText?.trim();
+            if (criteriaLevels.includes(firstCellText)) {
+                const targetTd = row.children[1];
+                const span = targetTd.querySelector('.original-text');
+                originalCriteria[firstCellText] = span ? span.innerText.trim() : '';
+            }
+        });
+
+        try {
+            const res = await fetch('/api/generate-evaluation-criteria', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ 
+                    evaluationElement: evaluationElement,
+                    originalCriteria: originalCriteria,
+                    context: contextInfo
+                })
+            });
+
+            const result = await res.json();
+
+            if (result.success) {
+                // 생성된 평가기준 적용
+                rows.forEach(row => {
+                    const firstCellText = row.children[0]?.innerText?.trim();
+                    if (criteriaLevels.includes(firstCellText) && result.criteria[firstCellText]) {
+                        const targetTd = row.children[1];
+                        const span = targetTd.querySelector('.original-text');
+                        if (span) {
+                            span.innerText = result.criteria[firstCellText];
+                            
+                            // 업데이트 알림
+                            const notification = document.createElement('span');
+                            notification.innerText = ' ✨ 업데이트됨';
+                            notification.style.color = '#007bff';
+                            notification.style.fontSize = '10px';
+                            span.appendChild(notification);
+                            setTimeout(() => notification.remove(), 2000);
+                        }
+                    }
+                });
+            } else {
+                alert('❌ 평가기준 생성 오류: ' + result.error);
+            }
+        } catch (err) {
+            console.error(err);
+            alert('평가기준 생성 중 서버 연결 오류가 발생했습니다.');
+        }
+    }
+
+    async function generateSingleCriteria(tdElement, level, contextInfo, table) {
+        const span = tdElement.querySelector('.original-text');
+        const originalText = span.innerText.trim();
+        
+        // 현재 테이블의 평가요소 찾기
+        const evaluationElement = findEvaluationElementInTable(table);
+        
+        span.innerText = '⏳ 기준 생성 중...';
+
+        try {
+            const res = await fetch('/api/generate-single-criteria', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ 
+                    level: level,
+                    evaluationElement: evaluationElement,
+                    originalText: originalText,
+                    context: contextInfo
+                })
+            });
+
+            const result = await res.json();
+
+            if (result.success) {
+                span.innerText = result.criteria;
+            } else {
+                span.innerText = originalText;
+                alert('❌ 오류: ' + result.error);
+            }
+        } catch (err) {
+            console.error(err);
+            span.innerText = originalText;
+            alert('서버 연결 오류가 발생했습니다.');
+        }
+    }
+
+    function findEvaluationElementInTable(table) {
+        const rows = table.querySelectorAll('tr');
+        for (const row of rows) {
+            const firstCellText = row.children[0]?.innerText?.trim();
+            if (firstCellText === '평가요소') {
+                const span = row.children[1]?.querySelector('.original-text');
+                return span ? span.innerText.trim() : '';
+            }
+        }
+        return '';
+    }
+
+    function extractContextFromTable(table) {
+        const rows = table.querySelectorAll('tr');
+        let contextInfo = {
+            grade: '',
+            semester: '',
+            subject: '',
+            unit: '',
+            criteria: '',
+            domain: ''
+        };
+
+        // 테이블 내 정보 수집
+        rows.forEach(row => {
+            const firstCell = row.children[0]?.innerText?.trim();
+            const secondCell = row.children[1]?.innerText?.trim();
+            
+            if (firstCell === '단원명') {
+                contextInfo.unit = secondCell;
+            } else if (firstCell === '성취기준') {
+                contextInfo.criteria = secondCell;
+            } else if (firstCell === '영 역' || firstCell === '영역') {
+                contextInfo.domain = secondCell;
+            }
+        });
+
+        // 학년/학기 정보 수집 (표 위의 텍스트에서)
+        const prevElements = [];
+        let currentElement = table.previousElementSibling;
+        for (let i = 0; i < 5 && currentElement; i++) {
+            prevElements.unshift(currentElement.innerText?.trim() || '');
+            currentElement = currentElement.previousElementSibling;
+        }
+        
+        // 과목명과 학년/학기 정보 찾기
+        prevElements.forEach(text => {
+            if (text.includes('학년') && text.includes('학기')) {
+                const gradeMatch = text.match(/(\d+)학년/);
+                const semesterMatch = text.match(/(\d+)학기/);
+                if (gradeMatch) contextInfo.grade = gradeMatch[1];
+                if (semesterMatch) contextInfo.semester = semesterMatch[1];
+            }
+            if (text.includes('과') && text.includes('평가')) {
+                contextInfo.subject = text.replace('평가 기준안', '').trim();
+            }
+        });
+
+        return contextInfo;
+    }
+
+    async function improveTextWithContext(tdElement, contextInfo) {
+        const span = tdElement.querySelector('.original-text');
+        const originalText = span.innerText.trim();
+
+        // 로딩 표시
+        span.innerText = '⏳ 문장 생성 중...';
+
+        try {
+            const res = await fetch('/api/improve-text', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ 
+                    text: originalText,
+                    context: contextInfo
+                })
+            });
+
+            const result = await res.json();
+
+            if (result.success) {
+                span.innerText = result.improved;
+            } else {
+                span.innerText = originalText;
+                alert('❌ 오류: ' + result.error);
+            }
+        } catch (err) {
+            console.error(err);
+            span.innerText = originalText;
+            alert('서버 연결 오류가 발생했습니다.');
+        }
+    }
+
+    // 기존 함수 (호환성 유지)
+    async function improveText(tdElement) {
+        const span = tdElement.querySelector('.original-text');
+        const originalText = span.innerText.trim();
+
+        // 로딩 표시
+        span.innerText = '⏳ 문장 생성 중...';
+
+        try {
+            const res = await fetch('/api/improve-text', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ text: originalText })
+            });
+
+            const result = await res.json();
+
+            if (result.success) {
+                span.innerText = result.improved;
+            } else {
+                span.innerText = originalText;
+                alert('❌ 오류: ' + result.error);
+            }
+        } catch (err) {
+            console.error(err);
+            span.innerText = originalText;
+            alert('서버 연결 오류가 발생했습니다.');
+        }
+    }
+</script>

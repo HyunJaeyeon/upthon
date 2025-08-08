@@ -4,6 +4,7 @@ import os
 import tempfile
 from dotenv import load_dotenv
 from document_analyzer import DocumentAnalyzer
+from text_improver import TextImprover
 
 # .env 파일 로드
 load_dotenv()
@@ -53,6 +54,21 @@ def analyze_document():
             analyzer = DocumentAnalyzer()
             api_result = analyzer.analyze_document(temp_path)
             
+            # API 응답을 콘솔에 출력
+            print("=" * 50)
+            print(f"📄 파일: {file.filename}")
+            print("🔍 Document Digitization API 응답:")
+            print("=" * 50)
+            
+            if api_result.get('success'):
+                import json
+                print(json.dumps(api_result, indent=2, ensure_ascii=False))
+            else:
+                print(f"❌ API 오류: {api_result.get('error')}")
+                print(f"메시지: {api_result.get('message')}")
+            
+            print("=" * 50)
+            
             if not api_result.get('success'):
                 return jsonify({
                     'success': False,
@@ -83,6 +99,78 @@ def analyze_document():
     
     except Exception as e:
         return jsonify({'error': f'처리 중 오류가 발생했습니다: {str(e)}'}), 500
+
+@app.route('/api/generate-text-options', methods=['POST'])
+def generate_text_options():
+    """문장 옵션 생성 API"""
+    try:
+        data = request.get_json()
+        text = data.get("text", "")
+        context = data.get("context", None)
+        num_options = data.get("num_options", 3)
+        
+        if not text:
+            return jsonify({'success': False, 'error': '문장이 비어 있습니다.'}), 400
+
+        improver = TextImprover()
+        result = improver.generate_text_options(text, context, num_options)
+        return jsonify(result)
+    except Exception as e:
+        return jsonify({'success': False, 'error': str(e)}), 500
+
+@app.route('/api/improve-text', methods=['POST'])
+def improve_text():
+    """문장 개선 API (기존 호환성 유지)"""
+    try:
+        data = request.get_json()
+        text = data.get("text", "")
+        context = data.get("context", None)
+        
+        if not text:
+            return jsonify({'success': False, 'error': '문장이 비어 있습니다.'}), 400
+
+        improver = TextImprover()
+        result = improver.improve_text(text, context)
+        return jsonify(result)
+    except Exception as e:
+        return jsonify({'success': False, 'error': str(e)}), 500
+
+@app.route('/api/generate-evaluation-criteria', methods=['POST'])
+def generate_evaluation_criteria():
+    """평가기준 4단계 생성 API"""
+    try:
+        data = request.get_json()
+        evaluation_element = data.get("evaluationElement", "")
+        original_criteria = data.get("originalCriteria", {})
+        context = data.get("context", None)
+        
+        if not evaluation_element:
+            return jsonify({'success': False, 'error': '평가요소가 비어 있습니다.'}), 400
+
+        improver = TextImprover()
+        result = improver.generate_evaluation_criteria(evaluation_element, original_criteria, context)
+        return jsonify(result)
+    except Exception as e:
+        return jsonify({'success': False, 'error': str(e)}), 500
+
+@app.route('/api/generate-single-criteria', methods=['POST'])
+def generate_single_criteria():
+    """단일 평가기준 생성 API"""
+    try:
+        data = request.get_json()
+        level = data.get("level", "")
+        evaluation_element = data.get("evaluationElement", "")
+        original_text = data.get("originalText", "")
+        context = data.get("context", None)
+        
+        if not level or not evaluation_element:
+            return jsonify({'success': False, 'error': '필수 정보가 누락되었습니다.'}), 400
+
+        improver = TextImprover()
+        result = improver.generate_single_criteria(level, evaluation_element, original_text, context)
+        return jsonify(result)
+    except Exception as e:
+        return jsonify({'success': False, 'error': str(e)}), 500
 
 @app.route('/api/health')
 def health_check():
